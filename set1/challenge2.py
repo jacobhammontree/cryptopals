@@ -8,6 +8,9 @@ def fixed_xor(h1,h2):
     for i in range(len(bs1)):
         xord_ints.append(bs1[i]^bs2[i])
     xord_bytes = bytes(xord_ints)
+    print(__name__)
     return xord_bytes.hex()
 
-print(fixed_xor("1c0111001f010100061a024b53535009181c","686974207468652062756c6c277320657965"))
+if __name__ == "__main__":
+        print(fixed_xor("1c0111001f010100061a024b53535009181c","686974207468652062756c6c277320657965"))
+
