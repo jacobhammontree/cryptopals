@@ -5,4 +5,4 @@ expected_frequencies = {
 def freq_of_letter(sent, letter):
     return sent.count(letter)/len(sent)
 
-print(freq_of_letter("abcabcabcabcaaaaaa", 'a'))
+print(freq_of_letter("abcabcabcabcaaaaaab", 'a'))
