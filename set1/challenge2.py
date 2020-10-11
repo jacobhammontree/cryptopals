@@ -8,7 +8,6 @@ def fixed_xor(h1,h2):
     for i in range(len(bs1)):
         xord_ints.append(bs1[i]^bs2[i])
     xord_bytes = bytes(xord_ints)
-    print(__name__)
     return xord_bytes.hex()
 
 if __name__ == "__main__":
