@@ -1,3 +1,4 @@
 .vscode/settings.json
-.pycache/*
-set1/__pycache__/challenge3.cpython-37.pyc
+/__pycache__/*
+set1/__pycache__
+cryptopals/*
