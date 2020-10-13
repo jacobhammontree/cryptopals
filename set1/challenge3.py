@@ -22,7 +22,7 @@ def score_chunk(chunk):
     illegal_character_stats = has_illegal_characters(chunk)
     score += illegal_character_stats[1]
 
-    for k,v in expected_frequencies.items():
+    for k,_ in expected_frequencies.items():
         freq_diff = abs(expected_frequencies[k] - (freq(chunk,hex(ord(k.upper()))[2:4]) + freq(chunk,hex(ord(k.lower()))[2:4])))
         score+=freq_diff
 
@@ -47,5 +47,5 @@ def freq_analysis_get_key(ciphertext):
 
 ciphertext = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
 
-print(freq_analysis_get_key(ciphertext))
+#print(freq_analysis_get_key(ciphertext))
 
