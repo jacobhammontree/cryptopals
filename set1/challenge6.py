@@ -1,6 +1,8 @@
 from bitstring import BitArray, BitString
 import base64, math
 
+import challenge3
+
 # Clipped from https://stackoverflow.com/a/49942785, credit to https://stackoverflow.com/users/1701600/boern
 def get_bit(value, n):
     return ((value >> n & 1) != 0)
@@ -13,13 +15,10 @@ def count_bits(num):
             count+=1
     return count
 
-def hamming_distance(s1, s2):
-    # Convert both to byte strings
-    # s1_arr = [ord(c) for c in s1]
-    # s2_arr = [ord(c) for c in s2]
+def hamming_distance(bs1, bs2):
     sum = 0
-    for i in range(0, len(s1)):
-        sum+=count_bits(s1[i]^s2[i])
+    for i in range(0, len(bs1)):
+        sum+=count_bits(bs1[i]^bs2[i])
     return sum
 
 def solve_multi_xor(b64encoded_ciphertext):
@@ -40,15 +39,14 @@ def solve_multi_xor(b64encoded_ciphertext):
         chunks.append([])
         for j in range(0+i, len(b64bytes), likely_key_size):
             chunks[i].append(b64bytes[j])
-    
+    key = ""
     for i in range(0, len(chunks)):
-        print("".join([hex(chunks[i][j])[2:4] if len(hex(chunks[i][j])) == 4 else "0"+hex(chunks[i][j])[2:3] for j in range(0, len(chunks[i]))]))
-    return None
+        key+=chr(int(challenge3.freq_analysis_get_key("".join([hex(chunks[i][j])[2:4] if len(hex(chunks[i][j])) == 4 else "0"+hex(chunks[i][j])[2:3] for j in range(0, len(chunks[i]))]))[0],16))
+    return key
     
 
 f = open("/Users/jacobhammontree/Projects/cryptopals/set1//challenge6.data", "r")
 b64 = f.read().replace("\n","")
-solve_multi_xor(b64)
-
-
 f.close()
+key = solve_multi_xor(b64)
+print(key)
