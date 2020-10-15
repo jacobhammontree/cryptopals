@@ -2,3 +2,5 @@
 /__pycache__/*
 set1/__pycache__
 cryptopals/*
+challenges/__pycache__/*
+challenges/__pycache__/utils.cpython-37.pyc
