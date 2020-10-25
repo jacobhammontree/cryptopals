@@ -6,6 +6,16 @@ def convert_b64_to_bytes(b64):
     b64bytes = base64.b64decode(b64_bytestring)
     return b64bytes
 
+def add_pkcs7_padding(plaintext, blocksize, bytesIn = False):
+    plaintext_bytes = None
+    if bytesIn:
+        plaintext_bytes = plaintext.encode("ascii")
+    else:
+        plaintext_bytes = plaintext
+    for _ in range(0, blocksize - (len(plaintext)%blocksize)):
+        plaintext_bytes+=(bytes([blocksize-(len(plaintext)%blocksize)]))
+    return plaintext_bytes
+
 def decrypt_aes_ecb(ciphertext, key):
     cipher = Cipher(algorithms.AES(key), modes.ECB())
     decryptor = cipher.decryptor()
@@ -29,6 +39,18 @@ def decrypt_aes_cbc(ciphertext,key,iv):
         pt_chunks_ascii.append(c.decode("ascii"))
     plaintext = "".join(pt_chunks_ascii)
     return plaintext
+
+def encrypt_aes_cbc(plaintext,key,iv):
+    pt_chunks = [plaintext[i:i+16] for i in range(0, len(plaintext), 16)]
+    ct_chunks = [iv]
+    for i in range(0,len(pt_chunks)):
+        ct_chunks.append(fixed_xor(pt_chunks[i], ct_chunks[i], False, False))
+        ct_chunks[i+1] = encrypt_aes_ecb(ct_chunks[i+1], key)
+    ciphertext = bytearray()
+    for c in ct_chunks[1:]:
+        for d in c:
+            ciphertext.append(d)
+    return bytes(ciphertext)
 
 def fixed_xor(h1,h2,hexin=True, hexout=True):
     if hexin:
