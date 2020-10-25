@@ -18,6 +18,18 @@ def encrypt_aes_ecb(plaintext, key):
     ciphertext = encryptor.update(plaintext) + encryptor.finalize()
     return ciphertext
 
+def decrypt_aes_cbc(ciphertext,key,iv):
+    ct_chunks = [iv]+[ciphertext[i:i+16] for i in range(0, len(ciphertext), 16)]
+    pt_chunks = []
+    for i in range(len(ct_chunks)-1, 0, -1):
+        pt_chunks.append(fixed_xor(decrypt_aes_ecb(ct_chunks[i], key), ct_chunks[i-1],False, False))
+    pt_chunks.reverse() 
+    pt_chunks_ascii = []  
+    for c in pt_chunks:
+        pt_chunks_ascii.append(c.decode("ascii"))
+    plaintext = "".join(pt_chunks_ascii)
+    return plaintext
+
 def fixed_xor(h1,h2,hexin=True, hexout=True):
     if hexin:
         bs1 = bytes.fromhex(h1)
