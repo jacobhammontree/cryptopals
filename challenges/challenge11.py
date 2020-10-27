@@ -34,4 +34,5 @@ def determine_mode(ciphertext):
 f = open("moby_dick_chapter_1to3.txt")
 plaintext = f.read()
 ciphertext,mode = encryption_oracle(bytes(plaintext, "utf-8"))
-print(determine_mode(ciphertext) == mode)
+ct, m2 = encryption_oracle(bytes("abababababababababababababababababababababababababababababababababababababab", "utf-8"))
+print(determine_mode(ct) == m2)

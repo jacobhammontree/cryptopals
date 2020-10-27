@@ -22,11 +22,15 @@ def decrypt_aes_ecb(ciphertext, key):
     plaintext = decryptor.update(ciphertext) + decryptor.finalize()
     return plaintext
 
-def encrypt_aes_ecb(plaintext, key):
+def encrypt_aes_ecb(plaintext, key, addPadding=False):
+    pt = plaintext
+    if addPadding:
+        pt = add_pkcs7_padding(pt, 16, False)
     cipher = Cipher(algorithms.AES(key), modes.ECB())    
     encryptor = cipher.encryptor()
-    ciphertext = encryptor.update(plaintext) + encryptor.finalize()
+    ciphertext = encryptor.update(pt) + encryptor.finalize()
     return ciphertext
+
 
 def decrypt_aes_cbc(ciphertext,key,iv):
     ct_chunks = [iv]+[ciphertext[i:i+16] for i in range(0, len(ciphertext), 16)]
@@ -40,7 +44,7 @@ def decrypt_aes_cbc(ciphertext,key,iv):
     plaintext = "".join(pt_chunks_ascii)
     return plaintext
 
-def encrypt_aes_cbc(plaintext,key,iv):
+def encrypt_aes_cbc(plaintext,key,iv=bytes(16)):
     pt_chunks = [plaintext[i:i+16] for i in range(0, len(plaintext), 16)]
     ct_chunks = [iv]
     for i in range(0,len(pt_chunks)):
